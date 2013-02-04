@@ -2,8 +2,14 @@
 # https://github.com/JamesHarrison/changeling/blob/b9a934963edfe9c78c4ea77ad4f03390f59a14db/cmake/Modules/AddCompilerFlag.cmake
 #
 
-include (CheckCCompilerFlag)
-include (CheckCXXCompilerFlag)
+#
+# TODO: normal result status
+# TODO: add flags only for C/CXX
+#
+
+include(CheckCCompilerFlag)
+include(CheckCXXCompilerFlag)
+
 macro(AddCompilerFlag _flag)
    string(REGEX REPLACE "[+/:= -]" "_" _flag_esc "${_flag}")
    check_c_compiler_flag("${_flag}" check_c_compiler_flag_${_flag_esc})

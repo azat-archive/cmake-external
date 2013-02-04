@@ -1,4 +1,8 @@
 
+#
+# TODO: add flags only for C/CXX
+#
+
 include(AddCompilerFlag)
 
 macro(AddCompilerFlags _flags_string)
