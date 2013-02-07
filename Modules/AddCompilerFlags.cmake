@@ -2,7 +2,7 @@
 #
 # Follow http://www.cmake.org/Wiki/CMakeMacroParseArguments convention
 #
-# AddCompilerFlags(FLAGS flag1 flag2 flagN LANGUAGES lang1 lang2)
+# AddCompilerFlags([FAIL_ON_ERROR ]FLAGS flag1 flag2 flagN LANGUAGES lang1 lang2)
 #
 
 # For CMAKE_PARSE_ARGUMENTS
@@ -14,7 +14,7 @@ include(CheckCXXCompilerFlag)
 macro(AddCompilerFlags)
     CMAKE_PARSE_ARGUMENTS(
         COMPILER_FLAGS # Prefix
-        "" # Options
+        "FAIL_ON_ERROR" # Options
         "" # One value arguments
         "FLAGS;LANGUAGES" # Multi value arguments
         ${ARGN}
@@ -41,8 +41,8 @@ macro(AddCompilerFlags)
                 elseif(LANGUAGE STREQUAL "CXX")
                     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FLAG}")
                 endif()
-            else()
-                message(FATAL_ERROR "${FLAG} not supported for ${LANGUAGE}. Try to update compiler.")
+            elseif(${COMPILER_FLAGS_FAIL_ON_ERROR})
+                message(FATAL_ERROR "${FLAG} not supported for ${LANGUAGE}. Try to update compiler/linker. Or don't set FAIL_ON_ERROR")
             endif()
         endforeach(LANGUAGE ${COMPILER_FLAGS_LANGUAGES})
     endforeach(FLAG ${COMPILER_FLAGS_LANGUAGES})
