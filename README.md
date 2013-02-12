@@ -8,6 +8,7 @@ CMake modules
     - AddFilesGlobRecursiveToList
     - FindLibrariesOrFatalError
     - FindLibraryOrFatalError
+    - FindIconv (look in libc and for libiconv)
 
 TODO
 ====
