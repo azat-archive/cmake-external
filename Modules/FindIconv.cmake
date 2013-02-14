@@ -1,3 +1,6 @@
+
+include(CheckSymbolExists)
+
 macro(FindIconv)
 	unset(LIBRARY CACHE)
 	find_library(LIBRARY NAMES iconv)
