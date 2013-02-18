@@ -10,6 +10,7 @@ cmake_minimum_required(VERSION 2.8.3)
 
 include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
+include(CMakeParseArguments)
 
 macro(AddCompilerFlags)
     CMAKE_PARSE_ARGUMENTS(
