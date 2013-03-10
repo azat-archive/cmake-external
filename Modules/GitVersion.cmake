@@ -14,11 +14,10 @@ macro(GitVersion projectName)
         OUTPUT_VARIABLE ${projectName}_GIT_SHA1
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
-    set(${projectName}_VERSION "${${projectName}_GIT_VERSION}")
 
     # If don't have commits after tag, just replace SHA1 by tag name
-    if ("${${projectName}_VERSION}" STREQUAL "")
-        set(${projectName}_VERSION ${${projectName}_GIT_SHA1})
+    if ("${${projectName}_GIT_VERSION}" STREQUAL "")
+        set(${projectName}_GIT_VERSION ${${projectName}_GIT_SHA1})
     endif()
-    message(STATUS "Git version ${${projectName}_VERSION}")
+    message(STATUS "Git version ${${projectName}_GIT_VERSION}")
 endmacro(GitVersion)
