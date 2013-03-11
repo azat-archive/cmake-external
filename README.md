@@ -9,6 +9,7 @@ CMake modules
     - FindLibrariesOrFatalError
     - FindLibraryOrFatalError
     - FindIconv (look in libc and for libiconv)
+    - GitVersion
 
 TODO
 ====
