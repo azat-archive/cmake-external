@@ -4,6 +4,10 @@
 #
 
 macro(GitVersion projectName)
+    # Cleanup cache
+    unset(${projectName}_GIT_VERSION CACHE)
+    unset(${projectName}_GIT_SHA1 CACHE)
+
     execute_process(
         COMMAND git describe
         OUTPUT_VARIABLE ${projectName}_GIT_VERSION
