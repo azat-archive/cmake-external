@@ -10,6 +10,7 @@ CMake modules
     - FindLibraryOrFatalError
     - FindIconv (look in libc and for libiconv)
     - GitVersion
+    - JoinArguments - breaking overly long lines without creating a list
 
 TODO
 ====
