@@ -25,3 +25,11 @@ macro(GitVersion projectName)
     endif()
     message(STATUS "Git version ${${projectName}_GIT_VERSION}")
 endmacro(GitVersion)
+
+macro(GitToDebVersion gitVersion)
+    execute_process(
+        COMMAND sh -c "echo ${${gitVersion}} | sed 's,^release-,,;s,-,+,;s,-,~,;' | sed 's/^v//'"
+        OUTPUT_VARIABLE ${gitVersion}
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+endmacro(GitToDebVersion)
