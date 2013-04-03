@@ -11,6 +11,7 @@ CMake modules
     - FindIconv (look in libc and for libiconv)
     - GitVersion
     - JoinArguments - breaking overly long lines without creating a list
+    - TryCompileFromSource - try compiling from source code, instead of file.
 
 TODO
 ====
