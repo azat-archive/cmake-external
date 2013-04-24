@@ -21,7 +21,7 @@ macro(TryCompileFromSource VAR MESSAGE SOURCE)
 			"${OUTPUT}\n")
 	else(${VAR})
 		message(STATUS "Checking whether ${MESSAGE} -- no")
-		set(${VAR} "${MESSAGE}")
+		set(${VAR} "")
 		file(APPEND ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeError.log
 			"${MESSAGE} failed with the following output:\n"
 			"${OUTPUT}\n")
