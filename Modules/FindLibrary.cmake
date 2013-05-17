@@ -3,6 +3,20 @@
 #
 # Usage: FindLibrary([FAIL_ON_ERROR] [RESULT ALL_WAS_FOUND] NAMES name1 [ name2 ...])
 #
+# Example:
+# {code}
+# FindLibrary(RESULT ${PROJECT_NAME}_LIBS_FOUND
+#             NAMES c)
+# if(NOT ${${PROJECT_NAME}_LIBS_FOUND})
+#     message(WARNING
+#             "=================================\n"
+#             "${PROJECT_NAME} will not builded.\n"
+#             "================================="
+#     )
+#     return(1)
+# endif()
+# {/code}
+#
 
 # For CMAKE_PARSE_ARGUMENTS
 cmake_minimum_required(VERSION 2.8.3)
