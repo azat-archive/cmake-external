@@ -6,8 +6,8 @@ CMake modules
         AddCompilerFlags([FAIL_ON_ERROR ][BUILD_TYPE Release|Debug ]FLAGS flag1 flag2 flagN LANGUAGES C CXX)
 
     - AddFilesGlobRecursiveToList
-    - FindLibrariesOrFatalError
-    - FindLibraryOrFatalError
+    - FindLibrary (Follow http://www.cmake.org/Wiki/CMakeMacroParseArguments convention)
+        FindLibrary ([FAIL_ON_ERROR] NAMES name1 [ name2 ...])
     - FindIconv (look in libc and for libiconv)
     - GitVersion
     - JoinArguments - breaking overly long lines without creating a list
