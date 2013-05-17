@@ -3,7 +3,7 @@ CMake modules
 ============
 
     - AddCompilerFlags (Follow http://www.cmake.org/Wiki/CMakeMacroParseArguments convention)
-        AddCompilerFlags([FAIL_ON_ERROR ][BUILD_TYPE Release|Debug ]FLAGS flag1 flag2 flagN LANGUAGES C CXX)
+        AddCompilerFlags([FAIL_ON_ERROR] [RESULT ALL_WAS_FOUND] [BUILD_TYPE Release|Debug ]FLAGS flag1 flag2 flagN LANGUAGES C CXX)
 
     - AddFilesGlobRecursiveToList
     - FindLibrary (Follow http://www.cmake.org/Wiki/CMakeMacroParseArguments convention)
