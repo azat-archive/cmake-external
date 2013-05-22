@@ -31,6 +31,7 @@ macro(AddCompilerFlags)
         foreach(LANGUAGE ${COMPILER_FLAGS_LANGUAGES})
             set(FLAG_ESC "${LANGUAGE}_${FLAG_ESC}")
 
+            # This is a workaround for "--coverage" flag.
             set(CMAKE_REQUIRED_LIBRARIES "${FLAG}")
             # Check language
             if("${LANGUAGE}" STREQUAL "C")
