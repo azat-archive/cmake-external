@@ -13,6 +13,10 @@ CMake modules
     - JoinArguments - breaking overly long lines without creating a list
     - TryCompileFromSource - try compiling from source code, instead of file.
 
+    - GenerateDebianControl - generate "debian/contol" file for debian packages.
+    - Split - split strings (handle _correct_ new lines and semicolons)
+    - SplitFile - same as Split() but read from file
+
 TODO
 ====
     Take a look at - http://www.cmake.org/Wiki/CMakeMacroParseArguments
