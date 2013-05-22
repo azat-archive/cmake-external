@@ -30,6 +30,8 @@ macro(AddCompilerFlags)
 
         foreach(LANGUAGE ${COMPILER_FLAGS_LANGUAGES})
             set(FLAG_ESC "${LANGUAGE}_${FLAG_ESC}")
+
+            set(CMAKE_REQUIRED_LIBRARIES "${FLAG}")
             # Check language
             if("${LANGUAGE}" STREQUAL "C")
                 check_c_compiler_flag(${FLAG} ${FLAG_ESC})
@@ -38,6 +40,7 @@ macro(AddCompilerFlags)
             else()
                 message(FATAL_ERROR "Language ${LANGUAGE} not supported")
             endif()
+            set(CMAKE_REQUIRED_LIBRARIES "")
 
             # Check return status
             if(${FLAG_ESC})
