@@ -26,6 +26,14 @@ macro(AddCompilerFlags)
     endif()
 
     foreach(FLAG ${COMPILER_FLAGS_FLAGS})
+        # Hack for clang, that will fail build with -rdynamic
+        # only with -Werror
+        if ("${FLAG}" STREQUAL "-rdynamic")
+            set(FLAG_TO_CHECK "${FLAG} -Werror")
+        else()
+            set(FLAG_TO_CHECK "${FLAG}")
+        endif()
+
         string(REGEX REPLACE "[+/:= -]" "_" FLAG_ESC "${FLAG}")
 
         foreach(LANGUAGE ${COMPILER_FLAGS_LANGUAGES})
@@ -35,9 +43,9 @@ macro(AddCompilerFlags)
             set(CMAKE_REQUIRED_LIBRARIES "${FLAG}")
             # Check language
             if("${LANGUAGE}" STREQUAL "C")
-                check_c_compiler_flag(${FLAG} ${FLAG_ESC})
+                check_c_compiler_flag(${FLAG_TO_CHECK} ${FLAG_ESC})
             elseif("${LANGUAGE}" STREQUAL "CXX")
-                check_cxx_compiler_flag(${FLAG} ${FLAG_ESC})
+                check_cxx_compiler_flag(${FLAG_TO_CHECK} ${FLAG_ESC})
             else()
                 message(FATAL_ERROR "Language ${LANGUAGE} not supported")
             endif()
