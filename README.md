@@ -17,6 +17,9 @@ CMake modules
     - Split - split strings (handle _correct_ new lines and semicolons)
     - SplitFile - same as Split() but read from file
 
+    - Configure - use this for configure_file()
+        Configure([VAL | STRING_VAL] FILE to DEFINES def1 def2)
+
 TODO
 ====
     Take a look at - http://www.cmake.org/Wiki/CMakeMacroParseArguments
