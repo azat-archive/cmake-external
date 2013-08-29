@@ -2,9 +2,25 @@
 # TODO: rename
 #
 
-macro(Configure ARG1 ARG2)
-    set(FILE "${ARG1}")
-    set(MACRO "${ARG2}")
+cmake_minimum_required(VERSION 2.8.3)
+include(CMakeParseArguments)
 
-    file(APPEND "${FILE}" "#cmakedefine ${MACRO}\n")
+macro(Configure)
+    CMAKE_PARSE_ARGUMENTS(
+        CONFIGURE # Prefix
+        "VAL;STRING_VAL" # Options
+        "FILE" # One value arguments
+        "DEFINES" # Multi value arguments
+        ${ARGN}
+    )
+
+    foreach(DEFINE ${CONFIGURE_DEFINES})
+        if (${CONFIGURE_STRING_VAL})
+            file(APPEND "${CONFIGURE_FILE}" "#cmakedefine ${DEFINE} \"@${DEFINE}@\"\n")
+        elseif (${CONFIGURE_VAL})
+            file(APPEND "${CONFIGURE_FILE}" "#cmakedefine ${DEFINE} @${DEFINE}@\n")
+        else()
+            file(APPEND "${CONFIGURE_FILE}" "#cmakedefine ${DEFINE}\n")
+        endif()
+    endforeach()
 endmacro(Configure)
