@@ -1,5 +1,6 @@
 #
 # TODO: rename
+# Usage: Configure([VAL | STRING_VAL] FILE to DEFINES def1 def2)
 #
 
 cmake_minimum_required(VERSION 2.8.3)
