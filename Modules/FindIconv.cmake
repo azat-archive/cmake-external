@@ -14,11 +14,6 @@ macro(FindIconv)
     if (LIBRARY)
         message(STATUS "Looking for iconv - found")
         set(HAVE_ICONV_IN_LIBICONV TRUE)
-        #
-        # For cmake object libraries
-        # set_property(TARGET lib PROPERTY COMPILE_FLAGS "${ICONV_CMAKE_OBJECTS_FLAGS}")
-        #
-        set(ICONV_CMAKE_OBJECTS_FLAGS "-l${LIBRARY}")
         set(LIBS ${LIBS} ${LIBRARY})
     else (LIBRARY)
         check_symbol_exists(iconv_open iconv.h HAVE_ICONV_IN_LIBC)
