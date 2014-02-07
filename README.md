@@ -8,6 +8,7 @@ CMake modules
     - AddFilesGlobRecursiveToList
     - FindLibrary (Follow http://www.cmake.org/Wiki/CMakeMacroParseArguments convention)
         FindLibrary ([FAIL_ON_ERROR] NAMES name1 [ name2 ...])
+    - FindPath (...)
     - FindIconv (look in libc and for libiconv)
     - GitVersion
     - JoinArguments - breaking overly long lines without creating a list
