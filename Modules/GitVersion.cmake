@@ -18,6 +18,12 @@ macro(GitVersion projectName)
         OUTPUT_VARIABLE ${projectName}_GIT_SHA1
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
+    execute_process(
+        COMMAND git rev-parse --abbrev-ref HEAD
+        OUTPUT_VARIABLE ${projectName}_GIT_BRANCH
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+
 
     # If don't have commits after tag, just replace SHA1 by tag name
     if ("${${projectName}_GIT_VERSION}" STREQUAL "")
