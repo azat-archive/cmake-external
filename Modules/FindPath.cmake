@@ -18,6 +18,7 @@ function(FindPath)
         ${ARGN}
     )
 
+    set(${FIND_PATH_RESULT} 1 CACHE INTERNAL "Have ${NAME}")
     foreach(NAME ${FIND_PATH_NAMES})
         unset(PATH_VAR CACHE)
         find_path(PATH_VAR NAME ${NAME} PATHS ${FIND_PATH_PATHS})
@@ -26,7 +27,7 @@ function(FindPath)
             message(STATUS "Looking for ${NAME} - found")
         else()
             if(NOT ${FIND_PATH_RESULT} STREQUAL "")
-                set(${FIND_PATH_RESULT} 0 PARENT_SCOPE)
+                set(${FIND_PATH_RESULT} "" CACHE INTERNAL "Have ${NAME}")
             endif()
 
             if(${FIND_PATH_FAIL_ON_ERROR})
