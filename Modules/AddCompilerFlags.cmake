@@ -2,7 +2,7 @@
 #
 # Follow http://www.cmake.org/Wiki/CMakeMacroParseArguments convention
 #
-# AddCompilerFlags([FAIL_ON_ERROR ][BUILD_TYPE Release|Debug ]FLAGS flag1 flag2 flagN LANGUAGES lang1 lang2)
+# AddCompilerFlags([FAIL_ON_ERROR FORCE ][BUILD_TYPE Release|Debug ]FLAGS flag1 flag2 flagN LANGUAGES lang1 lang2)
 #
 
 # For CMAKE_PARSE_ARGUMENTS
@@ -15,17 +15,25 @@ include(CMakeParseArguments)
 macro(AddCompilerFlags)
     CMAKE_PARSE_ARGUMENTS(
         COMPILER_FLAGS # Prefix
-        "FAIL_ON_ERROR" # Options
+        "FAIL_ON_ERROR;FORCE" # Options
         "BUILD_TYPE" # One value arguments
         "FLAGS;LANGUAGES" # Multi value arguments
         ${ARGN}
     )
+
+    string(TOUPPER "${CMAKE_BUILD_TYPE}" __BUILD_TYPE_UPPER__)
+    string(TOUPPER "${COMPILER_FLAGS_BUILD_TYPE}" __FLAGS_BUILD_TYPE_UPPER__)
 
     if (NOT "${COMPILER_FLAGS_BUILD_TYPE}" STREQUAL "")
         set(COMPILER_FLAGS_BUILD_TYPE "_${COMPILER_FLAGS_BUILD_TYPE}")
     endif()
 
     foreach(FLAG ${COMPILER_FLAGS_FLAGS})
+        if (NOT ${COMPILER_FLAGS_FORCE} AND
+            NOT "${__BUILD_TYPE_UPPER__}" MATCHES "${__FLAGS_BUILD_TYPE_UPPER__}")
+            break()
+        endif()
+
         # Hack for clang, that will fail build with -rdynamic
         # only with -Werror
         if ("${FLAG}" STREQUAL "-rdynamic")
