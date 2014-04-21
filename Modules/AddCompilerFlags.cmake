@@ -30,7 +30,8 @@ macro(AddCompilerFlags)
 
     foreach(FLAG ${COMPILER_FLAGS_FLAGS})
         if (NOT ${COMPILER_FLAGS_FORCE} AND
-            NOT "${__BUILD_TYPE_UPPER__}" MATCHES "${__FLAGS_BUILD_TYPE_UPPER__}")
+            NOT ${COMPILER_FLAGS_BUILD_TYPE} STREQUAL "" AND
+            NOT "${__BUILD_TYPE_UPPER__}" STREQUAL "${__FLAGS_BUILD_TYPE_UPPER__}")
             break()
         endif()
 
