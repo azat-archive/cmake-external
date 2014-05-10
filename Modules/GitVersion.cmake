@@ -39,3 +39,21 @@ macro(GitToDebVersion gitVersion)
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
 endmacro(GitToDebVersion)
+
+macro(GitVersionToMajorMinor projectName version)
+    # Install defaults, to avoid errors while compiling
+    set(${projectName}_VERSION_MAJOR 0)
+    set(${projectName}_VERSION_MINOR 0)
+
+    set(major ${version})
+    set(minor ${version})
+
+    string(REGEX REPLACE "^v([0-9]+)\\..*" "\\1" major ${major})
+    string(REGEX REPLACE "^v[0-9]+\\.([0-9]+)(-|$).*" "\\1" minor ${minor})
+    if (${major} GREATER 0)
+        set(${projectName}_VERSION_MAJOR ${major})
+    endif()
+    if (${minor} GREATER 0)
+        set(${projectName}_VERSION_MINOR ${minor})
+    endif()
+endmacro()
