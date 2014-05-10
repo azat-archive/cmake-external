@@ -10,6 +10,9 @@ macro(GenerateDebianControl src dst)
 
     set(i 1)
     foreach (line IN LISTS srcLines)
+        # Escape, since firstly it will be written to cmake-like cpack config
+        string(REGEX REPLACE "\\\"" "\\\\\"" line "${line}")
+
         # Additional logics for non-first lines in
         # "debian/control"
         if (i GREATER 1)
