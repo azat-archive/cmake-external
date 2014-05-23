@@ -43,7 +43,7 @@ macro(AddCompilerFlags)
             set(FLAG_TO_CHECK "${FLAG}")
         endif()
 
-        string(REGEX REPLACE "[+/:= .-]" "_" FLAG_ESC "${FLAG}")
+        string(REGEX REPLACE "[+/:= .,-]" "_" FLAG_ESC "${FLAG}")
 
         foreach(LANGUAGE ${COMPILER_FLAGS_LANGUAGES})
             set(FLAG_ESC "${LANGUAGE}_${FLAG_ESC}")
