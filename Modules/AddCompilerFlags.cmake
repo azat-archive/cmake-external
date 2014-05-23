@@ -2,7 +2,13 @@
 #
 # Follow http://www.cmake.org/Wiki/CMakeMacroParseArguments convention
 #
-# AddCompilerFlags([FAIL_ON_ERROR FORCE ][BUILD_TYPE Release|Debug ]FLAGS flag1 flag2 flagN LANGUAGES lang1 lang2)
+# Use OVERWRITE as a workaround for "--coverage" or clang -plugin
+#
+# AddCompilerFlags([FAIL_ON_ERROR FORCE ]
+#                  [BUILD_TYPE Release|Debug ]
+#                  [OVERWRITE additionalFlag ]
+#                  FLAGS flag1 flag2 flagN
+#                  LANGUAGES lang1 lang2)
 #
 
 # For CMAKE_PARSE_ARGUMENTS
@@ -16,7 +22,7 @@ macro(AddCompilerFlags)
     CMAKE_PARSE_ARGUMENTS(
         COMPILER_FLAGS # Prefix
         "FAIL_ON_ERROR;FORCE" # Options
-        "BUILD_TYPE" # One value arguments
+        "BUILD_TYPE;OVERWRITE" # One value arguments
         "FLAGS;LANGUAGES" # Multi value arguments
         ${ARGN}
     )
@@ -48,8 +54,9 @@ macro(AddCompilerFlags)
         foreach(LANGUAGE ${COMPILER_FLAGS_LANGUAGES})
             set(FLAG_ESC "${LANGUAGE}_${FLAG_ESC}")
 
-            # This is a workaround for "--coverage" flag.
-            set(CMAKE_REQUIRED_LIBRARIES "${FLAG}")
+            if (NOT ${COMPILER_FLAGS_OVERWRITE} STREQUAL "")
+                set(CMAKE_REQUIRED_LIBRARIES "${COMPILER_FLAGS_OVERWRITE}")
+            endif()
             # Check language
             if("${LANGUAGE}" STREQUAL "C")
                 check_c_compiler_flag(${FLAG_TO_CHECK} ${FLAG_ESC})
@@ -63,12 +70,16 @@ macro(AddCompilerFlags)
             # Check return status
             if(${FLAG_ESC})
                 if("${LANGUAGE}" STREQUAL "C")
-                    set(CMAKE_C_FLAGS${COMPILER_FLAGS_BUILD_TYPE} "${CMAKE_C_FLAGS${COMPILER_FLAGS_BUILD_TYPE}} ${FLAG}")
+                    set(CMAKE_C_FLAGS${COMPILER_FLAGS_BUILD_TYPE}
+                        "${CMAKE_C_FLAGS${COMPILER_FLAGS_BUILD_TYPE}} ${FLAG}")
                 elseif("${LANGUAGE}" STREQUAL "CXX")
-                    set(CMAKE_CXX_FLAGS${COMPILER_FLAGS_BUILD_TYPE} "${CMAKE_CXX_FLAGS${COMPILER_FLAGS_BUILD_TYPE}} ${FLAG}")
+                    set(CMAKE_CXX_FLAGS${COMPILER_FLAGS_BUILD_TYPE}
+                        "${CMAKE_CXX_FLAGS${COMPILER_FLAGS_BUILD_TYPE}} ${FLAG}")
                 endif()
             elseif(${COMPILER_FLAGS_FAIL_ON_ERROR})
-                message(FATAL_ERROR "${FLAG} not supported for ${LANGUAGE}. Try to update compiler/linker. Or don't set FAIL_ON_ERROR")
+                message(FATAL_ERROR
+                        "${FLAG} not supported for ${LANGUAGE}. "
+                        "Try to update compiler/linker. Or don't set FAIL_ON_ERROR")
             endif()
         endforeach(LANGUAGE ${COMPILER_FLAGS_LANGUAGES})
     endforeach(FLAG ${COMPILER_FLAGS_LANGUAGES})
