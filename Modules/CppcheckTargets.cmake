@@ -30,12 +30,14 @@ if(NOT CPPCHECK_FOUND)
 	find_package(cppcheck QUIET)
 endif()
 
-if(CPPCHECK_FOUND)
-	if(NOT TARGET all_cppcheck)
-		add_custom_target(all_cppcheck)
-		set_target_properties(all_cppcheck PROPERTIES EXCLUDE_FROM_ALL TRUE)
+macro(_create_cppcheck_targets)
+	if(CPPCHECK_FOUND)
+		if(NOT TARGET all_cppcheck)
+			add_custom_target(all_cppcheck)
+			set_target_properties(all_cppcheck PROPERTIES EXCLUDE_FROM_ALL TRUE)
+		endif()
 	endif()
-endif()
+endmacro()
 
 function(add_cppcheck_sources _targetname)
 	if(CPPCHECK_FOUND)
@@ -113,6 +115,7 @@ function(add_cppcheck_sources _targetname)
 			FAIL_REGULAR_EXPRESSION
 			"${CPPCHECK_FAIL_REGULAR_EXPRESSION}")
 
+		_create_cppcheck_targets()
 		add_custom_command(TARGET
 			all_cppcheck
 			PRE_BUILD
@@ -194,6 +197,7 @@ function(add_cppcheck _name)
 			FAIL_REGULAR_EXPRESSION
 			"${CPPCHECK_FAIL_REGULAR_EXPRESSION}")
 
+		_create_cppcheck_targets()
 		add_custom_command(TARGET
 			all_cppcheck
 			PRE_BUILD
