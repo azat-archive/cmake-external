@@ -26,7 +26,7 @@ macro(SetupLTO _toolchainPath _options)
                  "--plugin /usr/lib/LLVMgold.so")
         endif()
         # XXX: not a nice solution
-        if (${CMAKE_BUILD_TYPE_UPPER} STREQUAL "RELEASELTO")
+        if ("${CMAKE_BUILD_TYPE_UPPER}" STREQUAL "RELEASELTO")
             set(CMAKE_C_ARCHIVE_FINISH "llvm-ranlib <TARGET>")
         else()
             set(CMAKE_C_ARCHIVE_FINISH "")
@@ -42,7 +42,7 @@ macro(SetupLTO _toolchainPath _options)
         set(CMAKE_EXE_LINKER_FLAGS_RELEASELTO "-fwhole-program")
 
         # XXX: not a nice solution
-        if (${CMAKE_BUILD_TYPE_UPPER} STREQUAL "RELEASELTO")
+        if ("${CMAKE_BUILD_TYPE_UPPER}" STREQUAL "RELEASELTO")
             set(CMAKE_C_ARCHIVE_CREATE "gcc-ar cr <TARGET> <OBJECTS>")
             set(CMAKE_C_ARCHIVE_FINISH "gcc-ranlib <TARGET>")
         else()
