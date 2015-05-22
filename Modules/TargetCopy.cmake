@@ -12,3 +12,14 @@ macro(TargetCopy target dir)
         )
     endforeach()
 endmacro(TargetCopy)
+
+macro(TargetCopyDirectory target dst)
+    add_custom_target(${target} ALL COMMENT
+        "Copying ${target} directory to the ${dst}"
+    )
+    foreach(file ${ARGN})
+        add_custom_command(TARGET ${target} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory "${file}" "${dst}"
+        )
+    endforeach()
+endmacro(TargetCopyDirectory)
