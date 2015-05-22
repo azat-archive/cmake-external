@@ -4,11 +4,11 @@ macro(TargetCopy target dir)
         "Copying ${target} files to the ${dir}"
     )
     add_custom_command(TARGET ${target} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${dir}
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${dir}"
     )
     foreach(file ${ARGN})
         add_custom_command(TARGET ${target} POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy ${file} ${dir}
+            COMMAND ${CMAKE_COMMAND} -E copy "${file}" "${dir}"
         )
     endforeach()
 endmacro(TargetCopy)
