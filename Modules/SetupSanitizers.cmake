@@ -22,6 +22,9 @@ macro(SetupSanitizers)
                          FLAGS ${ARGV} "-fsanitize=thread -fPIC"
                          OVERWRITE "-fsanitize=thread -pie"
                          LANGUAGES C CXX)
+        set(CMAKE_EXE_LINKER_FLAGS_SANITIZETHREAD "-pie")
+        set(CMAKE_SHARED_LINKER_FLAGS_SANITIZETHREAD "-pie")
+
         AddCompilerFlags(FAIL_ON_ERROR BUILD_TYPE SANITIZEADDRESS
                          FLAGS ${ARGV} -fsanitize=address
                          OVERWRITE -fsanitize=address
