@@ -41,7 +41,8 @@ macro(SetupLTO _buildType _toolchainPath _options)
                          OVERWRITE "-flto ${LTO_TOOLCHAIN}"
                          LANGUAGES C CXX)
     else()
-        set(CMAKE_EXE_LINKER_FLAGS_RELEASELTO "-fwhole-program")
+        set(CMAKE_EXE_LINKER_FLAGS_RELEASELTO
+            "${CMAKE_EXE_LINKER_FLAGS_RELEASELTO} -fwhole-program")
 
         # XXX: not a nice solution
         if ("${_buildTypeUpper}" STREQUAL "RELEASELTO")
