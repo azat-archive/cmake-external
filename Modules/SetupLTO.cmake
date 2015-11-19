@@ -7,8 +7,9 @@ include(AddCompilerFlags)
 #     _toolchainPath = tools/toolchain
 # @_options: compiler options for the new target (will be called releaselto)
 #     example: -g3 -O3 -DNDEBUG
+# @_relax: relax DT_NEEDED for linux
 #
-macro(SetupLTO _buildType _toolchainPath _options)
+macro(SetupLTO _buildType _toolchainPath _options _relax)
     string(TOUPPER "${_buildType}" _buildTypeUpper)
     set(LTO_TOOLCHAIN "")
 
@@ -17,7 +18,11 @@ macro(SetupLTO _buildType _toolchainPath _options)
         AddCompilerFlags(FAIL_ON_ERROR BUILD_TYPE RELEASELTO FLAGS
                          "${LTO_TOOLCHAIN}"
                          LANGUAGES C CXX)
-        set(LINKER_FLAGS_RELEASELTO "-Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined")
+        if ("${_relax}" STREQUAL "RELAX")
+            set(LINKER_FLAGS_RELEASELTO "-Wl,--as-needed -Wl,--allow-shlib-undefined")
+        else()
+            set(LINKER_FLAGS_RELEASELTO "-Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined")
+        endif()
         set(CMAKE_EXE_LINKER_FLAGS_RELEASELTO "${LINKER_FLAGS_RELEASELTO}")
         set(CMAKE_SHARED_LINKER_FLAGS_RELEASELTO "${LINKER_FLAGS_RELEASELTO}")
     endif()
