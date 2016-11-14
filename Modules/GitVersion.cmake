@@ -10,16 +10,19 @@ macro(GitVersion projectName)
 
     execute_process(
         COMMAND git describe
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         OUTPUT_VARIABLE ${projectName}_GIT_VERSION
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
     execute_process(
         COMMAND git log -n1 --pretty=%h
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         OUTPUT_VARIABLE ${projectName}_GIT_SHA1
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
     execute_process(
         COMMAND git rev-parse --abbrev-ref HEAD
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         OUTPUT_VARIABLE ${projectName}_GIT_BRANCH
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
@@ -35,6 +38,7 @@ endmacro(GitVersion)
 macro(GitToDebVersion gitVersion)
     execute_process(
         COMMAND sh -c "echo ${${gitVersion}} | sed 's,^release-,,;s,-,+,;s,-,~,;' | sed 's/^v//'"
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         OUTPUT_VARIABLE ${gitVersion}
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
