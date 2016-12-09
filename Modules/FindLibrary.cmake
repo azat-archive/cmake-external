@@ -26,7 +26,7 @@ include(CMakeParseArguments)
 function(FindLibrary)
     CMAKE_PARSE_ARGUMENTS(
         FIND_LIBRARY # Prefix
-        "FAIL_ON_ERROR" # Options
+        "FAIL_ON_ERROR;STATIC" # Options
         "RESULT" # One value arguments
         "NAMES" # Multi value arguments
         ${ARGN}
@@ -37,7 +37,15 @@ function(FindLibrary)
     endif()
     foreach(LIBRARY_NAME ${FIND_LIBRARY_NAMES})
         unset(LIBRARY_PATH CACHE)
+
+        if (${FIND_LIBRARY_STATIC})
+            set(_FIND_LIBRARY_LIBRARY_SUFFIXES_ORIG ${CMAKE_FIND_LIBRARY_SUFFIXES})
+            set(CMAKE_FIND_LIBRARY_SUFFIXES .a)
+        endif()
         find_library(LIBRARY_PATH NAMES ${LIBRARY_NAME})
+        if (${FIND_LIBRARY_STATIC})
+            set(CMAKE_FIND_LIBRARY_SUFFIXES ${_FIND_LIBRARY_LIBRARY_SUFFIXES_ORIG})
+        endif()
 
         if(LIBRARY_PATH)
             message(STATUS "Looking for ${LIBRARY_NAME} - found")
