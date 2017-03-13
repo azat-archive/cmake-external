@@ -26,7 +26,7 @@ include(CMakeParseArguments)
 function(FindLibrary)
     CMAKE_PARSE_ARGUMENTS(
         FIND_LIBRARY # Prefix
-        "FAIL_ON_ERROR;STATIC" # Options
+        "FAIL_ON_ERROR;STATIC;NO_GCC" # Options
         "RESULT" # One value arguments
         "NAMES" # Multi value arguments
         ${ARGN}
@@ -42,7 +42,18 @@ function(FindLibrary)
             set(_FIND_LIBRARY_LIBRARY_SUFFIXES_ORIG ${CMAKE_FIND_LIBRARY_SUFFIXES})
             set(CMAKE_FIND_LIBRARY_SUFFIXES .a)
         endif()
-        find_library(LIBRARY_PATH NAMES ${LIBRARY_NAME})
+
+        if (NOT NO_GCC)
+            set(FIND_LIBRARY_GCC "/usr/lib/gcc/${CMAKE_LIBRARY_ARCHITECTURE}/${CMAKE_CXX_COMPILER_VERSION}")
+            if (EXISTS "${FIND_LIBRARY_GCC}")
+                list(APPEND FIND_LIBRARY_PATHS "${FIND_LIBRARY_GCC}")
+            endif()
+        endif()
+        find_library(LIBRARY_PATH
+            NAMES ${LIBRARY_NAME}
+            PATHS ${FIND_LIBRARY_PATHS}
+        )
+
         if (${FIND_LIBRARY_STATIC})
             set(CMAKE_FIND_LIBRARY_SUFFIXES ${_FIND_LIBRARY_LIBRARY_SUFFIXES_ORIG})
         endif()
