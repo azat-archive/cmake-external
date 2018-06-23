@@ -10,7 +10,7 @@ CMake modules
         FindLibrary ([FAIL_ON_ERROR] NAMES name1 [ name2 ...])
     - FindPath (...)
     - FindIconv (look in libc and for libiconv)
-    - GitVersion
+    - GitVersion([PREFIX] [ABBREV])
     - GitToDebVersion
     - GitVersionToMajorMinor
     - JoinArguments - breaking overly long lines without creating a list

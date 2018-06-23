@@ -1,38 +1,44 @@
+include(CMakeParseArguments)
 
-#
-# Git version
-#
+macro(GitVersion)
+    cmake_parse_arguments(GIT_VERSION
+        "FALLBACK" # Options
+        "ABBREV;PREFIX" # One value arguments
+        "" # Multi value arguments
+        ${ARGN})
 
-macro(GitVersion projectName)
+    if (${GIT_VERSION_ABBREV})
+        set(GIT_VERSION_ABBREV "--abbrev=${GIT_VERSION_ABBREV}")
+    endif()
+
     # Cleanup cache
-    unset(${projectName}_GIT_VERSION CACHE)
-    unset(${projectName}_GIT_SHA1 CACHE)
+    unset(${GIT_VERSION_PREFIX}VERSION CACHE)
+    unset(${GIT_VERSION_PREFIX}SHA1    CACHE)
 
     execute_process(
-        COMMAND git describe
+        COMMAND git describe ${GIT_VERSION_ABBREV}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        OUTPUT_VARIABLE ${projectName}_GIT_VERSION
+        OUTPUT_VARIABLE ${GIT_VERSION_PREFIX}VERSION
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
     execute_process(
-        COMMAND git log -n1 --pretty=%h
+        COMMAND git log --no-show-signature ${GIT_VERSION_ABBREV} -n1 --pretty=%h
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        OUTPUT_VARIABLE ${projectName}_GIT_SHA1
+        OUTPUT_VARIABLE ${GIT_VERSION_PREFIX}SHA1
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
     execute_process(
         COMMAND git rev-parse --abbrev-ref HEAD
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        OUTPUT_VARIABLE ${projectName}_GIT_BRANCH
+        OUTPUT_VARIABLE ${GIT_VERSION_PREFIX}BRANCH
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
 
-
     # If don't have commits after tag, just replace SHA1 by tag name
-    if ("${${projectName}_GIT_VERSION}" STREQUAL "")
-        set(${projectName}_GIT_VERSION ${${projectName}_GIT_SHA1})
+    if ((${GIT_VERSION_FALLBACK}) AND ("${${GIT_VERSION_PREFIX}VERSION}" STREQUAL ""))
+        set(${GIT_VERSION_PREFIX}VERSION ${${GIT_VERSION_PREFIX}SHA1})
     endif()
-    message(STATUS "Git version ${${projectName}_GIT_VERSION}")
+    message(STATUS "Git version ${${GIT_VERSION_PREFIX}VERSION}")
 endmacro(GitVersion)
 
 macro(GitToDebVersion gitVersion)
